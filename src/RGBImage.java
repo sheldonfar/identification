@@ -37,6 +37,10 @@ public class RGBImage extends Image {
         produceBinaryMatrix();
     }
 
+    public int getFeaturesNum() {
+        return featuresNum;
+    }
+
     public int[] getAverage() {
         int[] avg = new int[data[0].length];
 
@@ -67,6 +71,26 @@ public class RGBImage extends Image {
             sum = 0;
         }
     }
+//
+//    public void produceSk() {
+//        int sum;
+//        for (int i = 0; i < featuresNum; i++) {
+//            for(int j = 0; j < samplesNum; j++) {
+//                sum += Math.abs(vector[j] - binary[i][j]);
+//            }
+//            sk[i] =
+//        }
+//    }
+
+    public int[] getVector() {
+        return vector;
+    }
+
+    public int[][] getBinary() {
+        return binary;
+    }
+
+
 
     public int distanceTo(int[] otherVector) {
         if (vector.length != otherVector.length) {
@@ -76,7 +100,6 @@ public class RGBImage extends Image {
         for (int i = 0; i < otherVector.length; i++) {
             distance += Math.abs(vector[i] - otherVector[i]);
         }
-        System.out.println("SUM " + distance);
 
         return distance;
     }
