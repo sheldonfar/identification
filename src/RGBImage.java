@@ -10,7 +10,7 @@ public class RGBImage extends Image {
     int average[];
     int featuresNum;
     int samplesNum;
-    int delta = 15;
+    int delta = 20;
     int binary[][];
     int vector[];
 
