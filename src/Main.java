@@ -15,6 +15,66 @@ public class Main {
         return sk;
     }
 
+    public static int calcD(int featuresNum, int[][] arr) {
+        double[] k1 = new double[featuresNum];
+        double[] k2 = new double[featuresNum];
+        double[] k3 = new double[featuresNum];
+        double[] k4 = new double[featuresNum];
+
+        double[] D1 = new double[featuresNum];
+        double[] a = new double[featuresNum];
+        double[] b = new double[featuresNum];
+        double[] D2 = new double[featuresNum];
+        double[] J = new double[featuresNum];
+
+        for (int i = 0; i < featuresNum; i++) {
+            for (int j = 0; j < featuresNum; j++) {
+                if (arr[0][j] <= i) {
+                    k1[i] += 1;
+                } else {
+                    k3[i] += 1;
+                }
+                if (arr[1][j] <= i) {
+                    k2[i] += 1;
+                } else {
+                    k4[i] += 1;
+                }
+            }
+            D1[i] = k1[i] / 100;
+            a[i] = k3[i] / 100;
+            b[i] = k2[i] / 100;
+            D2[i] = k4[i] / 100;
+        }
+
+        for (int i = 0; i < featuresNum; i++) {
+            if ((D1[i] >= 0.1) && (D2[i] >= 0.1)) {
+                double a_ = a[i];
+                double b_ = b[i];
+                //$temp=1+0.5*(($a/($a+$D2))*(log($a/($a+$D2)))/log(2)+($D1/($D1+$b))*(log($D1/($D1+$b)))/log(2)+($b/($D1+$b))*(log($b/($D1+$b)))/log(2)+($D2/($a+$D2))*(log($D2/($a+$D2)))/log(2)); //критерій Шеннона
+                J[i] = (Math.log((2 - (a_ + b_)) / (a_ + b_)) / Math.log(2)) * (1 - (a_ + b_)); // критерій Кульбака
+            } else {
+                J[i] = 0;
+            }
+        }
+
+        System.out.println("-------J-------");
+        int d = 0;
+        double max_J = 0;
+        for (int i = 0; i < featuresNum; i++) {
+            System.out.print(J[i] + " ");
+            if (J[i] > max_J) {
+                max_J = J[i];
+                d = i;
+            }
+        }
+
+        System.out.println("\n--------------");
+        System.out.println("Max J " + max_J);
+        System.out.println("D " + d);
+
+        return d;
+    }
+
     public static void main(String[] args) {
         RGBImage[] imgs = new RGBImage[3];
         imgs[0] = new RGBImage("img/field.jpg");
@@ -75,55 +135,13 @@ public class Main {
             System.out.println("  ");
         }
 
-        double[] k1 = new double[featuresNum];
-        double[] k2 = new double[featuresNum];
-        double[] k3 = new double[featuresNum];
-        double[] k4 = new double[featuresNum];
 
-        double[] D1 = new double[featuresNum];
-        double[] a = new double[featuresNum];
-        double[] b = new double[featuresNum];
-        double[] D2 = new double[featuresNum];
-        double[] J = new double[featuresNum];
+        int d1 = calcD(featuresNum, sk);
+        int d2 = calcD(featuresNum, skPara);
 
-        for (int i = 0; i < featuresNum; i++) {
-            for (int j = 0; j < featuresNum; j++) {
-                if (sk[0][j] <= i) {
-                    k1[i] += 1;
-                } else {
-                    k3[i] += 1;
-                }
-                if (sk[1][j] <= i) {
-                    k2[i] += 1;
-                } else {
-                    k4[i] += 1;
-                }
-            }
-            D1[i] = k1[i] / 100;
-            a[i] = k3[i] / 100;
-            b[i] = k2[i] / 100;
-            D2[i] = k4[i] / 100;
-        }
 
-        for (int i = 0; i < featuresNum; i++) {
-            if ((D1[i] >= 0.2) && (D2[i] >= 0.2)) {
-                double a_ = a[i];
-                double b_ = b[i];
-                //$temp=1+0.5*(($a/($a+$D2))*(log($a/($a+$D2)))/log(2)+($D1/($D1+$b))*(log($D1/($D1+$b)))/log(2)+($b/($D1+$b))*(log($b/($D1+$b)))/log(2)+($D2/($a+$D2))*(log($D2/($a+$D2)))/log(2)); //критерій Шеннона
-                J[i] = (Math.log((2 - (a_ + b_)) / (a_ + b_)) / Math.log(2)) * (1 - (a_ + b_)); // критерій Кульбака
-            } else {
-                J[i] = 0;
-            }
-        }
+        RGBImage exam = new RGBImage("img/exam.jpg");
 
-        double max_J = 0;
-        for (int i = 0; i < featuresNum; i++) {
-            if (max_J < J[i]) {
-                max_J = J[i];
-            }
-        }
 
-        System.out.println("-------------");
-        System.out.println("MAX J " + max_J);
     }
 }
