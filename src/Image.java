@@ -10,21 +10,21 @@ public abstract class Image {
         this.data = data;
     }
 
-    protected int [][]data;
+    protected int[][] data;
 
-   public abstract int [] getAverage();
+    public abstract int[] getAverage();
 
-    public void printDataset(){
+    public void printDataset() {
 
-            for (int i = 0; i < data.length; i+=5){
-                for (int j = 0; j < data[i].length; j+=5){
-                    System.out.print(data[i][j]+ " ");
-                }
-                System.out.println();
+        for (int i = 0; i < data.length; i += 5) {
+            for (int j = 0; j < data[i].length; j += 5) {
+                System.out.print(data[i][j] + " ");
             }
-            System.out.println("--------------------");
+            System.out.println();
         }
+        System.out.println("--------------------");
     }
+}
 
 
 

@@ -91,7 +91,6 @@ public class RGBImage extends Image {
     }
 
 
-
     public int distanceTo(int[] otherVector) {
         if (vector.length != otherVector.length) {
             throw new Error("Vector dimensions must agree");
