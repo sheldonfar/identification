@@ -99,7 +99,6 @@ public class Main {
                     k4[i] += 1;
                 }
             }
-            System.out.println("D1 ----> " + k1[i] / 100);
             D1[i] = k1[i] / 100;
             a[i] = k3[i] / 100;
             b[i] = k2[i] / 100;
@@ -107,7 +106,6 @@ public class Main {
         }
 
         for (int i = 0; i < featuresNum; i++) {
-            System.out.println("D1[i] " + D1[i] + ", D2[i] " + D2[i]);
             if ((D1[i] >= 0.2) && (D2[i] >= 0.2)) {
                 double a_ = a[i];
                 double b_ = b[i];
@@ -120,17 +118,12 @@ public class Main {
 
         double max_J = 0;
         for (int i = 0; i < featuresNum; i++) {
-            System.out.println("J " + J[i]);
             if (max_J < J[i]) {
                 max_J = J[i];
             }
         }
 
+        System.out.println("-------------");
         System.out.println("MAX J " + max_J);
-    }
-
-
-    public static void calcAccuracy() {
-
     }
 }
