@@ -6,15 +6,18 @@ import java.io.IOException;
 
 public class RGBImage extends Image {
 
-    int data[][];
-    int average[];
-    int featuresNum;
-    int samplesNum;
-    int delta = 20;
-    int binary[][];
-    int vector[];
+    private int data[][];
+    private int average[];
+    private int featuresNum;
+    private int samplesNum;
+    private int deltaL;
+    private int deltaU;
+    private int binary[][];
+    private int vector[];
 
-    RGBImage(String path) {
+    RGBImage(String path, int deltaL, int deltaU) {
+        this.deltaL = deltaL;
+        this.deltaU = deltaU;
         BufferedImage img = null;
         try {
             img = ImageIO.read(new File(path));
@@ -37,7 +40,7 @@ public class RGBImage extends Image {
         produceBinaryMatrix();
     }
 
-    public int getFeaturesNum() {
+    int getFeaturesNum() {
         return featuresNum;
     }
 
@@ -57,41 +60,31 @@ public class RGBImage extends Image {
         return avg;
     }
 
-    public void produceBinaryMatrix() {
+    private void produceBinaryMatrix() {
         int sum = 0;
         binary = new int[featuresNum][samplesNum];
         vector = new int[featuresNum];
 
         for (int i = 0; i < featuresNum; i++) {
             for (int j = 0; j < samplesNum; j++) {
-                binary[i][j] = (data[i][j] > average[i] - delta && data[i][j] < average[i] + delta) ? 1 : 0;
+                binary[i][j] = (data[i][j] > average[i] - deltaL && data[i][j] < average[i] + deltaU) ? 1 : 0;
                 sum += binary[i][j];
             }
             vector[i] = (sum > featuresNum / 2) ? 1 : 0;
             sum = 0;
         }
     }
-//
-//    public void produceSk() {
-//        int sum;
-//        for (int i = 0; i < featuresNum; i++) {
-//            for(int j = 0; j < samplesNum; j++) {
-//                sum += Math.abs(vector[j] - binary[i][j]);
-//            }
-//            sk[i] =
-//        }
-//    }
 
-    public int[] getVector() {
+    int[] getVector() {
         return vector;
     }
 
-    public int[][] getBinary() {
+    int[][] getBinary() {
         return binary;
     }
 
 
-    public int distanceTo(int[] otherVector) {
+    int distanceTo(int[] otherVector) {
         if (vector.length != otherVector.length) {
             throw new Error("Vector dimensions must agree");
         }
